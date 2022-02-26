@@ -1,53 +1,53 @@
-const shuffle = (låtar) => {
-  let tilllagdaLåtar = [];
-  let antalHögar = Math.floor(Math.sqrt(låtar.length));
-  let antalLåtarPerHög = Math.floor(Math.sqrt(låtar.length));
-  let högar = [];
-  for (let i = 0; i <= antalHögar; i++) {
-    högar.push([]);
+const shuffle = (songs) => {
+  let addedSongs = [];
+  let numberOfGroups = Math.floor(Math.sqrt(songs.length));
+  let numberSongsPerGroup = Math.floor(Math.sqrt(songs.length));
+  let groups = [];
+  for (let i = 0; i <= numberOfGroups; i++) {
+    groups.push([]);
   }
-  let shuffladeLåtar = [];
-  let förraHög = [];
+  let shuffledSongs = [];
+  let lastGroup = [];
   const randomNum = (max) => {
     return Math.floor(Math.random() * max);
   };
-  //lägg till låtar i högar
-  for (let j = 0; j < högar.length; j++) {
-    for (let i = 0; i < låtar.length; i++) {
-      if (högar[j].length < antalLåtarPerHög) {
-        if (!tilllagdaLåtar.includes(låtar[i])) {
-          högar[j].push(låtar[i]);
-          tilllagdaLåtar.push(låtar[i]);
+  //lägg till songs i groups
+  for (let j = 0; j < groups.length; j++) {
+    for (let i = 0; i < songs.length; i++) {
+      if (groups[j].length < numberSongsPerGroup) {
+        if (!addedSongs.includes(songs[i])) {
+          groups[j].push(songs[i]);
+          addedSongs.push(songs[i]);
         }
       }
     }
   }
 
   //random ordning
-  const shufflaLåtar = () => {
-    while (shuffladeLåtar.length < låtar.length) {
-      let randomHög = högar[randomNum(högar.length)];
+  const shuffleSongs = () => {
+    while (shuffledSongs.length < songs.length) {
+      let randomGroup = groups[randomNum(groups.length)];
       if (
-        JSON.stringify(förraHög).includes(JSON.stringify(randomHög)) ||
-        !randomHög.length
+        JSON.stringify(lastGroup).includes(JSON.stringify(randomGroup)) ||
+        !randomGroup.length
       ) {
-        shufflaLåtar();
+        shuffleSongs();
       } else {
-        förraHög = null;
-        förraHög = randomHög;
-        let randomLåtFrånRandomHög = randomHög[randomNum(randomHög.length)];
-        if (shuffladeLåtar.includes(randomLåtFrånRandomHög)) {
-          shufflaLåtar();
+        lastGroup = null;
+        lastGroup = randomGroup;
+        let randomSongFromRandomGroup =
+          randomGroup[randomNum(randomGroup.length)];
+        if (shuffledSongs.includes(randomSongFromRandomGroup)) {
+          shuffleSongs();
         } else {
-          shuffladeLåtar.push(randomLåtFrånRandomHög);
+          shuffledSongs.push(randomSongFromRandomGroup);
         }
       }
     }
   };
-  shufflaLåtar();
-  return shuffladeLåtar;
+  shuffleSongs();
+  return shuffledSongs;
 };
-
 module.exports = {
   shuffle,
 };
